@@ -1,0 +1,125 @@
+\documentclass[11pt]{article} % this tells LaTeX to make an article (as opposed to a book, for example)
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{dark_green}{HTML}{008000}
+
+\usepackage{fancyhdr}
+\usepackage{fixmath}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tikzscale}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{setspace}
+\onehalfspacing
+
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxB=\dp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+\usepackage[left=1in,
+        right=1in,
+        top=1in,
+        bottom=1in,
+        includefoot, heightrounded]{geometry}
+\usepackage{microtype}
+
+\DeclareMathOperator{\image}{Im}
+\DeclareMathOperator{\aut}{Aut}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Qiyuan Zheng, WesID: 339693}
+\lhead{MATH524, PS2}
+\cfoot{\thepage}
+\begin{document}
+\section*{Problem 1}
+a) The space $\R P^0$ is homeomorphic to the space with the singleton $\{p\}$.
+
+b) The space $\R P^1$ is homeomorphic to $S^1$.
+
+c) Show the map $\psi:\R P^{n-1}\to \R P^n:[x_1:\ldots:x_m]\mapsto[x_1:\ldots:x_n:0]$ is an embedding.
+
+
+\begin{proof}
+We will show that $\psi$ is continuous and an application of the Closed Map Lemma will complete the proof.
+
+First define $q:\R^n\to\R P^{n-1}$ and $p:\R^{n+1}\to \R P^n$ to be our quotient maps; fix $U\subseteq \R P^n$ open. We first show that $\psi$ is continuous by showing that $\psi^{-1}(U)$ is open in $\R P^{n-1}$, which is equivalent to $q^{-1}(\psi^{-1}(U))$ being open in $\R^n$. 
+
+Fix $x = (x_1,\dots,x_n)\in q^{-1}(\psi^{-1}(U))$ so that $[x_1:\ldots:x_n:0]\in U$ and thus $x' = (x_1,\dots,x_n,0)\in p^{-1}(U)$. Note that $p^{-1}(U)$ is open in $\R^{n+1}$ as $p$ is continuous. Thus, we can find some $\varepsilon>0$ so that $x'\in B(x',\varepsilon)\subseteq p^{-1}(U)$. Let $\varphi$ denote the embedding $\varphi:\R^n\to\R^{n+1}:(x_1,\dots,x_n)\mapsto(x_n,\ldots,x_n,0)$. Notice that $\varphi(x) = x'$ and thus $x\in \varphi^{-1}(B(x',\varepsilon))\subseteq \varphi^{-1}(p^{-1}(U))$. Since $\varphi$ is continuous, we have $\varphi^{-1}(B(x',\varepsilon))$ is open in $\R^n$ as well. Now observe the following:
+\begin{align*}
+y\in q^{-1}(\psi^{-1}(U)) & \iff \psi(q(y))\in U \\
+& \iff [y_1:\ldots:y_n:0]\in U \\
+& \iff p(\varphi(y))\in U \\
+& \iff y\in\varphi^{-1}(p^{-1}(U)).
+\end{align*}
+Thus, we have $\varphi^{-1}(p^{-1}(U)) = q^{-1}(\psi^{-1}(U))$ and hence, for arbitrary $x\in q^{-1}(\psi^{-1}(U)$, there exists neighborhood $\varphi^{-1}(B(x',\varepsilon))$ such that $x\in \varphi^{-1}(B(x',\varepsilon))\subseteq q^{-1}(\psi^{-1}(U)$. Thus, the set $q^{-1}(\psi^{-1}(U)\subseteq \R^n$ is open and thus $\psi$ is continuous.
+\end{proof}
+
+d) By the uniqueness of the quotient, we can interpret $\R P^n$ as $S^n/\sim$ where $\sim$ identifies the antipodal points. Inductively, the ``equator'' of $S^n/\sim$ (i.e. all the points with the last coordinate zero), is the embedding of $\R P^{n-1}$ so it should have one cell of each dimension from $0$ to $n-1$. Now, $S^n/\sim \setminus \text{equator}$ are just the upper and lower-hemispheres, which are identified together. To get a characteristic map for this $n$-dimensional cell, just map $\bar{\mathbb{B}}^n$ (the closed ball) onto $S^n/\sim$ that takes the interior to the interior and the boundary as a map that ``doubles the angles'' so that everything is identified appropriately.
+
+\section*{Problem 2}
+a) Since $\C$ is a field, we know that $\C P^0 \cong \{p\}$.
+
+b) Consider $[z_1:z_2]$ such that $z_2\ne 0$, so we can get $[z_1:z_2] = [z:1]$ where $z=z_1/z_2$. Hence, the set $\{[z_1:z_2]:z_2\ne 0\}\cong \C$. Additionally, if $z_2=0$, we get $\{[z_1:0]\}\cong \{p\}$ by part a). Hence, we conclude that $\C P^1$ is just the one point compactification of $\C$, therefore we have $\C P^1\cong S^2$.
+
+
+\newpage
+\section*{Problem 3}
+Let $p:S^n\to\R P^n:(x_1,\dots,x_n)\mapsto[x_1:\ldots:x_n]$. Show that this is a covering map.
+
+\begin{proof}
+By uniqueness of the quotient map, we know that $\R P^n \cong S^n/\sim$ where $\sim$ identifies the antipodal points on $S^n$. Thus, it suffices to show that $p:S^n\to S^n/\sim$ that takes every point to its equivalent class (i.e. the quotient map) is indeed a covering map (we can just chain everything through the homeomorphism). Since $S^n$ is a connected manifold (so its locally path connected, using its basis of regular coordinate balls), it satisfies the domain properties. 
+
+Now, fix $[x] \in S^n/\sim$, we want to show that there exists $U$ neighborhood of $[x]$ such that $p^{-1}(U)$ is a disjoint union of \emph{two} connected open sets in $S^n$, each of which maps homeomorphically onto $U$. We define $E\subseteq S^n$ to be the equator of $S^n$, that is we have
+\[E =  \{(x_1,x_2,\ldots,x_n,0):(x_1,x_2,\ldots,x_n,0)\in S^n\}.\]
+Notice that we have $[x]  =\{x,-x\}$ and $x\in E\iff -x\in E$ (so it doesn't matter which representative we take). First, suppose that $x\notin E$. Thus, we have $[x] = p(x) \in p(S^n\setminus E)$, which is an open set since $S^n\setminus E$ is a saturated open set. Let $U = p(S^n\setminus E)$ and, since $S^n\setminus E$ is a saturated set, we have $p^{-1}(U) = p^{-1}(p(S^n\setminus E)) = S^n\setminus E$ as well (this is generally not true, but it holds due to the saturated property of $S^n\setminus E$. Now, $S^n\setminus E = H_1\biguplus H_2$, where $H_1$ and $H_2$ are the (open) upper and lower-hemispheres, respectively. Both $H_1$ and $H_2$ are connected open sets and, since $p$ restricted to each of them is injective (i.e. a pair of antipodal points cannot \emph{both} be in the same hemisphere) and still surjective onto $U$, each of the $H_i$ do map homeomorphically onto $U$ by $p$. In the case that $x\in E$, consider the ``vertical equator'' and the left and right-hemisphere.
+ \end{proof} 
+
+ \section*{Problem 4}
+ Let $p:\tilde{X}\to X$ be a covering map and $X$ be Hausdorff, show $\tilde{X}$ is Hausdorff as well.
+
+ \begin{proof}
+ Fix $x,y\in \tilde{X}$ distinct points, we want to show that there exists $V_1,V_2$ such that $x\in V_1$ and $y\in V_2$ with $V_1\cap V_2 = \emptyset$. Consider $p(x)$ and $p(y)$ in $X$. If $p(x)\ne p(y)$, then the result is trivial (just take the separation in $X$ and map it back into the pre-images). Now, suppose $p(x)=p(y)$ and let $U$ be its evenly covered neighborhood. Write $p^{-1}(U) = \biguplus_\alpha V_\alpha$ where $V_\alpha$ are disjoint connected open sets that map homeomorphically onto $U$ via $p$. Thus, we must have $x\in V_\alpha$ and $y\in V_\beta$ where $V_\alpha\ne V_\beta$ since the restriction of $p$ to each sheet is injective. 
+ \end{proof}
+
+ Let $p:\tilde{X}\to X$ be a covering map and $X$ be a manifold, show $\tilde{X}$ is a manifold as well.
+
+ \begin{proof}
+ We'll show that $\tilde{X}$ is also locally Euclidean. Fix $y\in \tilde{X}$ and $p(y)\in X$, since $X$ is locally Euclidean, we know that $p(y)\in V$ where $V\cong A$ for $A\subseteq \R^n$ open. Let $U\subseteq X$ be the evenly covered neighborhood of $p(y)$ and consider $p(y)\in U\cap V$, where $U\cap V\cong A'$ for $A'\subseteq \R^n$ open (just restrict the homeomorphism). Now, consider $p^{-1}(U) = \biguplus_\alpha W_\alpha$ to be the sheets of $U$ and let $y\in W_\alpha$ in one of the sheets. Now, the map $p\big|_{W_\alpha}:W_\alpha\to U$ is a homeomorphism, so we have
+ \[y\in \left(p\big|_{W_\alpha}\right)^{-1}(U\cap V) \cong U\cap V \cong A'\]
+ since $p(y)\in U\cap V$. Thus, $\left(p\big|_{W_\alpha}\right)^{-1}(U\cap V)$ is the locally Euclidean neighborhood of $y$.
+ \end{proof}
+
+
+\end{document}
