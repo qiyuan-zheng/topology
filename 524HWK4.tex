@@ -1,0 +1,140 @@
+\documentclass[11pt]{article} % this tells LaTeX to make an article (as opposed to a book, for example)
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{dark_green}{HTML}{008000}
+
+\usepackage{fancyhdr}
+\usepackage{fixmath}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tikzscale}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{setspace}
+\onehalfspacing
+
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxB=\dp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+\usepackage[left=1in,
+        right=1in,
+        top=1in,
+        bottom=1in,
+        includefoot, heightrounded]{geometry}
+\usepackage{microtype}
+
+\DeclareMathOperator{\image}{Im}
+\DeclareMathOperator{\aut}{Aut}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\wt}{\widetilde}
+\newcommand{\Z}{\mathbb{Z}}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Qiyuan Zheng, WesID: 339693}
+\lhead{MATH524, PS4}
+\cfoot{\thepage}
+\begin{document}
+\section*{Problem 1}
+Use the first claim of SVK to show that, for all $n\geq 2$, the sphere $S^n$ is simply connected. Explain why the argument fails for $n=1$.
+
+\begin{proof}
+Fix $\varepsilon>0$ and let $U = \{(x_1,\ldots,x_{n+1}):x_{n+1}>-\varepsilon\}$ and $V = \{(x_1,\ldots,x_{n+1}:x_{n+1}<\varepsilon\}$. Note that, using a restriction of the stereographic projection, we can show that $U,V,$ and $U\cap V$ are all path connected. Now, both $U$ and $V$ are contractible (you can prove that they are homeomorphic to some open disc in $\R^{n+1}$ via the stereographic projection). Thus, we have $\pi_1(U)*\pi_1(V) = \{e\}$. By the surjective map we proved in class, we have $\pi_1(S^n) = \{e\}$ for all $n>2$. 
+
+This argument does not work for $n=1$ because any two ``open arcs'' that cover $S^1$ must intersect in a non-path connected space.
+\end{proof}
+
+\section*{Problem 2}
+Let $p:\wt{X}\to X$ to be a covering map with $p(\wt{x}_0) = x_0$. Define $\phi:\pi_1(X,x_0)\to p^{-1}(\{x_0\}:[f]\to \wt{f}_{\wt{x}_0}(1)$ where $\wt{f}_{\wt{x}_0}$ is the lift of $f$ starting at $\wt{x}_0$.
+
+a) $\phi$ is well-defined.
+
+\begin{proof}
+Suppose $f,g$ are path homotopic, then $\wt{g}_{\wt{x}_0}$ and $\wt{f}_{\wt{x}_0}$ are also path homotopic, hence we have $\wt{g}_{\wt{x}_0}(1)=\wt{f}_{\wt{x}_0}(1)$, as desired.
+\end{proof}
+
+b) $\phi$ is always surjective.
+
+\begin{proof}
+We know that, by the definition of a covering map, $\wt{X}$ has to be path connected (it's connected and locally path connected). Fix $\wt{x}\in p^{-1}(\{x_0\})$ and let $\alpha$ be a path from $\wt{x_0}$ to $\wt{x}$. Consider $(p\circ\alpha)$, it is a loop based at $x_0$. Let $\wt{(p\circ \alpha)}_{\wt{x}_0}$ be the lift of $(p\circ \alpha)$ that starts at $\wt{x}_0$. Note that $\alpha$ is also a lift of $p\circ \alpha$. Since $\wt{(p\circ \alpha)}_{\wt{x}_0}$ and $\alpha$ both start at $\wt{x}_0$, we must have $\wt{(p\circ \alpha)}_{\wt{x}_0} = \alpha$ and hence $\wt{(p\circ \alpha)}_{\wt{x}_0}(1) = \alpha(1) = \wt{x}$.
+\end{proof}
+
+c) Show that every covering space of a manifold has countably many sheets.
+
+\begin{proof}
+Let $M$ be a manifold, by Lee's theorem, we have $\pi_1(M,x_0)$ is countable for all $x_0$. Since $\phi$ is surjective by part b), the result follows.
+\end{proof}
+
+d) If $\wt{X}$ is simply connected, then $\phi$ is injective.
+
+
+\begin{proof}
+Suppose $[f],[g]\in \pi_1(X,x_0)$ such that $\wt{f}_{\wt{x}_0}(1) = \wt{g}_{\wt{x}_0}(1)$. This condition gives us that $\wt{f}_{\wt{x}_0}\cdot \overline{\wt{g}}_{\wt{x}_0}$ is well-defined and it's a loop based at $\wt{x}_0$. Since $\wt{X}$ is simply connected, we must have $\wt{f}_{\wt{x}_0}\cdot \overline{\wt{g}}_{\wt{x}_0}$ is path homotopic to $c_{\wt{x}_0}$. Hence, we have $f\cdot \bar{g}$ is path homotopic to $c_{x_0}$, which implies that $[f] = [g]$.
+\end{proof}
+
+e) Use the covering map $p:S^n\to \R P^n$ to find $\pi_1(\R P^n)$ for $n>1$.
+
+\begin{proof}
+Since $S^n$ is simply connected for $n>1$, we know our map is bijective. Also, $S^n$ is a two-sheeted cover of $\R P^n$ with $p$ ``identifying antipodal points''. Hence, we have $\# \pi_1(\R P^n) = 2$, therefore $\R P^n \cong \Z/2\Z$ for all $n>1$.
+\end{proof}
+
+\section*{Problem 3}
+a) Let $p:\wt{X}\to X$ be a covering map, show that the right action of $\pi_1(X,x_0)$ on $p^{-1}(\{x_0\})$ via $\wt{x}\cdot [f] = \wt{f}_{\wt{x}}(1)$ is well-defined and is in fact a right action.
+
+\begin{proof}
+We first show well-defined. Suppose $f$ is path homotopic to $g$, then $\wt{f}_{\wt{x}}$ is path homotopic to $\wt{g}_{\wt{x}}$ for each $\wt{x}\in p^{-1}(\{x_0\})$, hence we have
+\[\wt{x}\cdot [f] = \wt{f}_{\wt{x}}(1) =  \wt{g}_{\wt{x}}(1)= \wt{x}\cdot [g].\]
+We now show that this is a right action. First consider $\wt{x}\cdot [c_{x_0}] = (\wt{c_{x_0}})_{\wt{x}}(1) = c_{\wt{x}}(1) = \wt{x}$, where the second equality employs the uniqueness of lifts. Now, for $[f],[g]\in \pi_1(X,x_0)$, first consider
+\begin{align*}
+\wt{x}\cdot [f]\cdot [g] & = \wt{f}_{\wt{x}}(1)\cdot [g] \\
+& = \left(\wt{g}_{\wt{f}_{\wt{x}}(1)}\right)(1) \\
+& = \left(\wt{f}_{\wt{x}}\cdot \wt{g}_{\wt{f}_{\wt{x}}(1)}\right)(1) \\
+& = \wt{(f\cdot g)}_{\wt{x}}(1) \\
+& = \wt{x}\cdot [f\cdot g].
+\end{align*}
+\end{proof}
+
+c) Show that the above action is transitive.
+
+\begin{proof}
+Fix $\wt{x},\wt{y}\in p^{-1}(\{x_0\})$ and let $\alpha$ be a path from $\wt{x}$ to $\wt{y}$ in $\wt{X}$. Then $(p\circ \alpha)$ is a loop based at $x_0$ and $\wt{(p\circ \alpha)}_{\wt{x}} = \alpha$ is the unique lift of $(p\circ \alpha)$ that begins at $\wt{x}$. Hence we have $\wt{x}\cdot [(p\circ \alpha)] = \wt{(p\circ \alpha)}_{\wt{x}}(1) = \alpha(1) = \wt{y}$.
+\end{proof}
+
+d) Show that the right action is transitive if and only if $\wt{X}$ is simply connected.
+
+\begin{proof}
+$\implies:$ Suppose the right action is transitive so that, for all $\wt{x}\in p^{-1}(\{x_0\})$ and for all $[f]\in \pi_1(X,x_0)$, we have $\wt{x}\cdot [f] = \wt{x}$ implies that $[f] = [c_{x_0}]$. Now, fix $\wt{f}$ to be a loop in $\wt{X}$ based at $\wt{x}\in p^{-1}(\{x_0\})$, we'll show that it's homotopic to the constant loop. Then we have $p \circ \wt{f}$ is a loop based at $x_0$. We then have $\wt{x}\cdot [p\circ \wt{f}] = \wt{f}(1) = \wt{x}$, hence we have $[p\circ \wt{f}] = [c_{x_0}]$. Hence, we must have $\wt{f}$ is path homotopic to $c_{\wt{x}}$, as desired.
+
+$\impliedby:$ Suppose that $\wt{X}$ is simply connected, we want to show that for all $\wt{x}$ and $[f],[g]$, we have $\wt{x}\cdot [f] = \wt{x}\cdot [g]$ implies $[f]=[g]$. Suppose suppose $\wt{x}\cdot [f] = \wt{x}\cdot [g]$ so we have $\wt{f}_{\wt{x}}(1) = \wt{g}_{\wt{x}}(1)$, therefore we have $\wt{f}_{\wt{x}}\cdot \overline{\wt{g}_{\wt{x}}} = c_{\wt{x}}$ is well-defined and the equality holds because $\wt{X}$ is simply connected. Hence we have $\wt{f}_{\wt{x}}$ is path homotopic to $\wt{g}_{\wt{x}}$ and therefore $f$ is path homotopic to $g$, as desired.
+\end{proof}
+
+\end{document}
