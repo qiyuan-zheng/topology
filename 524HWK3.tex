@@ -1,0 +1,92 @@
+\documentclass[11pt]{article} % this tells LaTeX to make an article (as opposed to a book, for example)
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{dark_green}{HTML}{008000}
+
+\usepackage{fancyhdr}
+\usepackage{fixmath}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tikzscale}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{setspace}
+\onehalfspacing
+
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxB=\dp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+\usepackage[left=1in,
+        right=1in,
+        top=1in,
+        bottom=1in,
+        includefoot, heightrounded]{geometry}
+\usepackage{microtype}
+
+\DeclareMathOperator{\image}{Im}
+\DeclareMathOperator{\aut}{Aut}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\wt}{\widetilde}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Qiyuan Zheng, WesID: 339693}
+\lhead{MATH524, PS3}
+\cfoot{\thepage}
+\begin{document}
+\section*{Problem 2}
+Let $p:\wt{X}\to X$ be a covering map and $A\subseteq X$ be locally path connected. Show that each component of $p^{-1}(A)$ maps onto its image via $p$ as a covering map.
+
+\begin{proof}
+We first show that $p^{-1}(A)$ is locally path connected, which would imply that its components are locally path connected as well. Fix $\wt{x}\in p^{-1}(A)$ and a neighborhood $V$ that's open in $p^{-1}(A)$ so that $\wt{x}\in V \subseteq p^{-1}(A)$. We want to find a $\wt{W}$ path connected neighborhood such that $\wt{x}\in \wt{W}\subseteq V$. Let $U$ be the evenly covered neighborhood of $p(\wt{x})$ and let $U_\alpha$ be the slice that contains $\wt{x}$. By the property of the covering map, we have $V\cap U_\alpha \cong p(V\cap U_\alpha)$. Now, since $V\cap U_\alpha$ is open in $p^{-1}(A)$, we have $p(V\cap U_\alpha)$ is open in $A$, we can find a path connected open set $W$ such that $p(\wt{x})\in W\subseteq p(V\cap U_\alpha)\subseteq A$. Let $\wt{W} = \left(p\big|_{U_\alpha}\right)^{-1}(W)$, which is the homeomorphic image of a path connected set, so we have $\wt{x}\in \wt{W}\subseteq V\cap U_\alpha \subseteq V$. Applying Proposition 4.26 in Lee gives us that each component of $p^{-1}(A)$ is locally path connected as well.
+
+Fix $C\subseteq p^{-1}(A)$ to be a component and consider $p\big|_C:C\to p(C)$. Now, $p\big|_C$ is clearly continuous and surjective. So it remains to show that for all $x\in C$, there exists an evenly covered neighborhood $U$ open in $C$ such that the pre-image of $U$ is a disjoint union of connected open sets, each of which maps homeomorphically down to $U$. Fix $x\in C$, since $p:\wt{X}\to X$ is a covering map, we must have some evenly covered neighborhood $U'$ of $x$. Set $U = U'\cap p(C)$. Consider $\left(p\big|_C\right)^{-1}(U) = \left(p\big|_C\right)^{-1}(U'\cap p(C))$, note that this is open in $C$ as $p\big|_C$ is continuous. Now, as open sets of locally path connected sets are locally path connected, we know that $\left(p\big|_C\right)^{-1}(U)$ is locally path connected as well. Hence, each of the components of $\left(p\big|_C\right)^{-1}(U)$ are open in $\left(p\big|_C\right)^{-1}(U)$, and thus they are open in $p(C)$. Therefore, the pre-image of $U$ under this restriction map is is disjoint union of connected open sets. Note that they each map homeomorphically onto $U$ because they will simply inherit the local homeomorphism from $p:\wt{X}\to X$.
+\end{proof}
+
+\section*{Problem 3}
+Let $p:\wt{X}\to X$ be a covering map and $X$ a compact space. Show that $\wt{X}$ is compact if and only if $p$ is a finite-sheeted cover.
+
+
+\textbf{Claim:} For each $x\in X$ and for each open set $V$ containing the fiber of $x$, there is a neighborhood $W$ of $x$ such that $p^{-1}(W)$ is contained in $V$.
+
+
+\begin{proof}
+Fix $x\in X$ and let $p^{-1}(\{x\})\subseteq V$. Let $U$ be the evenly covered neighborhood of $x$ with slices $U_i$ for $1\leq i\leq n$, where $n$ is the number of sheets of $p$. Let $W = \bigcap_i p(U_i\cap V)$, which is open since the indexing is finite and non-empty because $x$ is in there. Now, fix $y\in p^{-1}(W)$. Notice that $p(y)\in p(U_i\cap V)$ for all $i$, which implies that, for each $i$, there exists a $y_i\in U_i\cap V$ such that $p(y) = p(y_i)$. Let $i$ be the slice that $x$ is in would give us that $p(y) = p(x)$, which would imply that $y\in p^{-1}(\{x\})$.
+\end{proof}
+
+
+\begin{proof}
+We first prove the converse $\impliedby$ direction. Suppose $p$ is finite-sheeted with $n$ sheets. Fix $\{V_\alpha\}$ to be an open cover for $\wt{X}$. Now, for each $x\in X$, define a function $\Gamma:X\to \mathcal{P}(\{V_\alpha\})$ that maps each $x$ to a finite number of $V_\alpha$'s that cover $p^{-1}(\{x\})$ (may need axiom of choice here). Now, for each $x$, let $W_x$ be the set given in the claim such that $p^{-1}(W)$ is a subset of the union of the finite $V_\alpha$'s that cover $p^{-1}(\{x\})$. Reduce $\{W_x\}$ into a finite subcover, say $\{W_{x_i}\}_{i=1}^k$. Now, consider $p^{-1}(W_{x_i})$ and for each $i$, intersect $p^{-1}(W_{x_i})$ with each of the sets in $\Gamma(x_i)$. Now, this new collection, say $\mathcal{W}$, is a refinement of the original $\{V_\alpha\}$ and we can compute $\# \mathcal{W}\leq n\times k$.
+
+We now prove the $\implies$ direction. Suppose towards a contradiction that $p$ is not finite-sheeted. Let $\{U_x\}$ be the evenly covered neighborhood of $X$, which reduces to a finite subcover $\{U_i\}_{i=1}^n$. We can assume that this finite subcover is minimal in the sense that none of the $U_i$ is contained in the union of the other $U_j$'s. Now, let $U_\alpha^{(i)}$ be the slices of each $U_i$. This will form a infinite cover of $\wt{X}$ but it cannot reduce to a finite subcover. If it does reduce to a finite subcover, this will contradict the fact that the $\{U_i\}$ forms a minimal subcover of the space $X$.
+\end{proof}
+\end{document}
